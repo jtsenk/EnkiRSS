@@ -1,5 +1,7 @@
 package com.jtsenkbeil.enki.enkirss.feature.util;
 
+import android.util.Log;
+
 public class Utils {
 
     public static void waitSecs(int secs) {
@@ -10,6 +12,10 @@ public class Utils {
         while (runTime < endTime) {
             runTime = System.currentTimeMillis() - startTime;
         }
+    }
+
+    public static void logD(String key, String msg) {
+        Log.d(key,msg);
     }
 
 

@@ -1,62 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.ShowsActivity">
 
-    <LinearLayout
-        android:id="@+id/shows_nav_bar"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/shows_pager_tabl"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"
-        android:background="@android:color/black"
-        android:layout_alignParentTop="true">
+        android:layout_height="60dp">
+    </android.support.design.widget.TabLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Shows"
-            android:gravity="center"
-            android:layout_weight="1"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="0.03"
-            android:layout_gravity="center"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Downloads"
-            android:gravity="center"
-            android:layout_weight="1"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="0.03"
-            android:layout_gravity="center"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Settings"
-            android:gravity="center"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/shows_main_frag"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/shows_vpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/shows_nav_bar"
-        android:background="@android:color/holo_green_light">
-    </LinearLayout>
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
 
-</RelativeLayout>
+
+</LinearLayout>

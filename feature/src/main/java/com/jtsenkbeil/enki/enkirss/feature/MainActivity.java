@@ -19,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
     private Animation anima2;
     private Intent intent;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
