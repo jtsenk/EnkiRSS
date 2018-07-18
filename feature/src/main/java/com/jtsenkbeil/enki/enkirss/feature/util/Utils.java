@@ -1,22 +1,18 @@
 package com.jtsenkbeil.enki.enkirss.feature.util;
 
 import android.util.Log;
+import android.widget.Toast;
+
+import com.jtsenkbeil.enki.enkirss.feature.MainActivity;
 
 public class Utils {
-
-    public static void waitSecs(int secs) {
-        //take seconds-to-wait as int parameter secs, then waits that long
-        long startTime = System.currentTimeMillis();
-        long runTime = 0;
-        long endTime = (long)secs * 1000;
-        while (runTime < endTime) {
-            runTime = System.currentTimeMillis() - startTime;
-        }
-    }
 
     public static void logD(String key, String msg) {
         Log.d(key,msg);
     }
 
+    public static void toastShort(String msg) {
+        Toast.makeText(MainActivity.mainContext, msg,Toast.LENGTH_SHORT).show();
+    }
 
 } //end Utils class

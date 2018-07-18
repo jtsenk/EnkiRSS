@@ -1,5 +1,6 @@
 package com.jtsenkbeil.enki.enkirss.feature;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +19,12 @@ public class MainActivity extends AppCompatActivity {
     private Animation anima;
     private Animation anima2;
     private Intent intent;
+    public static Context mainContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainContext = getApplicationContext();
         setContentView(R.layout.activity_main);
         itv = findViewById(R.id.intro_tv);
         atv = findViewById(R.id.author_tv);

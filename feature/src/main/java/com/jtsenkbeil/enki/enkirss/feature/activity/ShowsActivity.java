@@ -11,7 +11,9 @@ import com.jtsenkbeil.enki.enkirss.feature.R;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.ViewFragmentStateAdapter;
 import com.jtsenkbeil.enki.enkirss.feature.frags.DownloadsFragment;
 import com.jtsenkbeil.enki.enkirss.feature.frags.ShowsFragment;
+import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ShowsActivity extends AppCompatActivity {
@@ -34,5 +36,8 @@ public class ShowsActivity extends AppCompatActivity {
         vPager.setAdapter(adapter);
         tabL.setupWithViewPager(vPager);
 
+        File df = getFilesDir();
+        Utils.toastShort(df.getPath());
+        Utils.logD("Files Directory",df.getPath());
     }
 }
