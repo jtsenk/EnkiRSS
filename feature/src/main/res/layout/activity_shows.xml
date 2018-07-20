@@ -7,6 +7,20 @@
     android:orientation="vertical"
     tools:context=".activity.ShowsActivity">
 
+    <Button
+        android:id="@+id/shows_activity_add_test_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Add test vals to DB"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/shows_activity_del_test_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Clear test vals from DB"
+        android:clickable="true"/>
+
     <android.support.design.widget.TabLayout
         android:id="@+id/shows_pager_tabl"
         android:layout_width="match_parent"

@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jtsenkbeil.enki.enkirss.feature.R;
+import com.jtsenkbeil.enki.enkirss.feature.util.Episode;
+import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
 import java.util.ArrayList;
 
@@ -16,9 +18,9 @@ public class EpsListAdapter extends BaseAdapter {
 
     private final Context context;
     private final LayoutInflater inflater;
-    private final ArrayList<String> list;
+    private final ArrayList<Episode> list;
 
-    public EpsListAdapter(Context context, ArrayList<String> list) {
+    public EpsListAdapter(Context context, ArrayList<Episode> list) {
         this.context = context;
         this.list = list;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -26,7 +28,12 @@ public class EpsListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        if (list != null) {
+            return list.size();
+        } else {
+            Utils.logD("EpsListAdapter","list is null: returning 0");
+            return 0;
+        }
     }
 
     @Override
@@ -43,8 +50,8 @@ public class EpsListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.eps_item, parent, false);
         TextView tv = (TextView)convertView.findViewById(R.id.eps_item_tv);
-        tv.setText(list.get(position));
-        Log.d("get", list.get(position));
+        tv.setText(list.get(position).getTitle() );
+        //Log.d("get", list.get(position).getTitle() );
         return tv;
     }
 }

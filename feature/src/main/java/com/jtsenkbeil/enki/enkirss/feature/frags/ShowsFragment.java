@@ -2,18 +2,23 @@ package com.jtsenkbeil.enki.enkirss.feature.frags;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.jtsenkbeil.enki.enkirss.feature.R;
 import com.jtsenkbeil.enki.enkirss.feature.activity.ShowEpisodesActivity;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.ShowsListAdapter;
+import com.jtsenkbeil.enki.enkirss.feature.db.Ki;
+import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
 import java.util.ArrayList;
 
@@ -34,6 +39,9 @@ public class ShowsFragment extends Fragment {
     private String mParam2;
     private ListView lv;
     private Intent intent;
+    private Ki ki;
+    private Cursor curs;
+    private final String showTbl = "tbl_shows";
 
     private OnFragmentInteractionListener mListener;
     private View v;
@@ -43,10 +51,21 @@ public class ShowsFragment extends Fragment {
         context = getContext();
         intent = null;
         showList = new ArrayList<>();
+        curs = null;
+        ki = new Ki();
 
         //get shows to add
-        showList.add("How Did This Get Made?");
-        showList.add("Stuff You Should Know");
+        //showList.add("How Did This Get Made?");
+        //showList.add("Stuff You Should Know");
+        curs = ki.getTable(showTbl);
+        while (curs.moveToNext()) {
+            showList.add(curs.getString(curs.getColumnIndex("name")));
+            Utils.logD("ShowsFragment::Cursor", curs.getString(curs.getColumnIndex("id")) + "    " + curs.getString(curs.getColumnIndex("name")));
+        }
+
+        //TODO: implement Ki closing method!!
+        //ki.closeDown();
+
     }
 
     /**

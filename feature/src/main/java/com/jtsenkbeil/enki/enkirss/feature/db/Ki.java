@@ -14,10 +14,14 @@ import java.sql.ResultSet;
 
 import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
+//Ki is the DB Connection Class: Use this class for all DB-related tasks
 public class Ki {
 
     private SQLiteDatabase db;
     private File dbFile;
+    private ContentValues values;
+    private String sql;
+    private final String showTbl = "tbl_shows";
 
     public Ki() {
         try {
@@ -25,35 +29,56 @@ public class Ki {
             db = openOrCreateDatabase(dbFile.getPath(), null);
             Utils.logD("Ki", "DB is alive at " + db.getPath()  + ".  Calling create...");
             createTable();
-            //add test values to test the db
-            addTestValues();
+            //add test values to test the db -- TODO: make this a settings option
+            //addTestValues();
+            //clear the show table to clean up -- TODO: make this a settings option
+            //clearShowTable();
         } catch (Exception exc) {
             Utils.logD("KiError","Constructor Error: " + exc.getMessage());
         }
     }
 
     private void createTable() {
-        String sql="create table if not exists tbl_shows(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,xml_link TEXT NOT NULL)";
+        sql="create table if not exists tbl_shows(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,xml_link TEXT NOT NULL)";
         db.execSQL(sql);
-        Utils.logD("Ki","Executing the create!");
+        Utils.logD("Ki","Executing the create (if not exists)...");
     }
 
     private void addValue(){
-        ContentValues values=new ContentValues();
+        values=new ContentValues();
         values.put("name", "Yan");
         values.put("password", "123456");
         db.insert("t_user", "id", values);
     }
 
     private void addTestValues() {
-        ContentValues values=new ContentValues();
+        values=new ContentValues();
         values.put("name", "How Did This Get Made?");
         values.put("xml_link", "how-did-this-get-made.xml");
         db.insert("tbl_shows", "id", values);
+        values = new ContentValues();
+        values.put("name", "Stuff You Should Know");
+        values.put("xml_link", "stuff-you-should-know.xml");
+        db.insert("tbl_shows", "id", values);
+    }
+
+    public void debugAddTestVals() {
+        addTestValues();
+    }
+
+    public void debugClearTestVals() {
+        clearShowTable();
     }
 
     public Cursor getTable(String tbl) {
         return db.rawQuery("select * from " + tbl, null);
+    }
+
+    public void clearShowTable() {
+        sql = "delete from " + showTbl;
+        db.execSQL(sql);
+        sql = "vacuum";
+        db.execSQL(sql);
     }
 
     private Cursor getShow(int id) {
@@ -61,7 +86,7 @@ public class Ki {
     }
 
     private void addShow(String name, String xml_link) {
-        String sql="insert into tbl_shows values(\'" + name + "\',\'" + xml_link + "\')";
+        sql="insert into tbl_shows values(\'" + name + "\',\'" + xml_link + "\')";
         db.execSQL(sql);
     }
 
@@ -91,7 +116,7 @@ public class Ki {
     }
 
     private void update(){
-        ContentValues values=new ContentValues();
+        values = new ContentValues();
         values.put("password", "111111");
         // method 1
         db.update("t_user", values, "id=1", null);
@@ -99,4 +124,11 @@ public class Ki {
         db.update("t_user", values, "name=? or password=?",new String[]{"Yan","123456"});
     }
 
-}
+    public void closeDown() {
+        db.close();
+        values = null;
+        dbFile = null;
+        sql = null;
+    }
+
+}//end Ki class
