@@ -41,7 +41,7 @@ public class ShowsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(ShowsActivity.this, SettingsActivity.class);
                 startActivity(intent);
-                //close this activity so we don't go back to bad configs
+                //close this activity so we don't go back to bad configs :JTS
                 ShowsActivity.this.finish();
             }
         });

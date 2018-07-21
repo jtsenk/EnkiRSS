@@ -2,6 +2,7 @@ package com.jtsenkbeil.enki.enkirss.feature.frags;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.jtsenkbeil.enki.enkirss.feature.R;
 import com.jtsenkbeil.enki.enkirss.feature.activity.ShowEpisodesActivity;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.DownloadsListAdapter;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.ShowsListAdapter;
+import com.jtsenkbeil.enki.enkirss.feature.db.Ki;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class DownloadsFragment extends Fragment {
     private View view;
     private ArrayList<String> dList;
     private final Context context;
+    private Ki ki;
+    private Cursor curs;
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,10 +50,12 @@ public class DownloadsFragment extends Fragment {
         intent = null;
         dList = new ArrayList<>();
 
-        for (int i=0; i<22; i++) {
-            dList.add("Download " + i);
+        ki = new Ki();
+        curs = ki.getTable("tbl_dl");
+        while (curs.moveToNext()) {
+            dList.add(curs.getString(curs.getColumnIndex("title")));
         }
-
+        ki.closeDown();
     }
 
     /**

@@ -1,15 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="300dp"
+    android:layout_width="300dp"
+    android:layout_height="370dp"
     android:orientation="vertical"
-    android:background="@android:color/holo_orange_dark">
+    android:background="@color/colorPrimary">
 
     <TextView
+        android:id="@+id/ep_dialog_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="40dp"
         android:text="EpisodeDialog"
+        android:textSize="14dp"
+        android:textColor="@android:color/primary_text_light"
         android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ep_dialog_ep_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="EpTitle"
+        android:textSize="16dp"
+        android:textColor="@android:color/primary_text_light"
+        android:gravity="center"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <TextView
+            android:id="@+id/ep_dialog_ep_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Desc"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="12dp" />
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/ep_dialog_ep_filesize"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="FileSize"
+        android:textColor="@android:color/primary_text_light"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ep_dialog_ep_filetype"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="FileType"
+        android:textColor="@android:color/primary_text_light"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ep_dialog_cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="Cancel"
+            android:clickable="true"
+            android:background="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/ep_dialog_dl_btn"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="Download"
+            android:clickable="true"
+            android:background="@android:color/holo_green_dark" />
+
+    </LinearLayout>
 
 </LinearLayout>

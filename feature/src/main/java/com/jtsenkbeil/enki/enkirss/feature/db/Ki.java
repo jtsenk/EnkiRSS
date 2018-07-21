@@ -24,11 +24,24 @@ public class Ki {
     private String sql;
     private Cursor curs;
     private final String showTbl = "tbl_shows";
+    private final String dbName = "test_db.db";
+    private String dbDir;
+    private File f;
 
     public Ki() {
         try {
-            dbFile = MainActivity.mainContext.getDatabasePath("test_db.db");
-            db = openOrCreateDatabase(dbFile.getPath(), null);
+            dbFile = MainActivity.mainContext.getDatabasePath(dbName);
+            //get the directory portion of the dbFile path
+            dbDir = dbFile.getPath().substring(0, dbFile.getPath().length()-dbName.length());
+            Utils.logD("Ki","dbDir= " + dbDir);
+            //check and, if necessary, create the db directory
+            f = new File(dbDir);
+            if (f.exists()) {
+                db = openOrCreateDatabase(dbFile.getPath(), null);
+            } else {
+                f.mkdir();
+                db = openOrCreateDatabase(dbFile.getPath(), null);
+            }
             Utils.logD("Ki", "DB is alive at " + db.getPath()  + ".  Calling create...");
             createTable();
         } catch (Exception exc) {
@@ -39,7 +52,10 @@ public class Ki {
     private void createTable() {
         sql="create table if not exists tbl_shows(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,xml_link TEXT NOT NULL, xml_loc TEXT)";
         db.execSQL(sql);
-        Utils.logD("Ki","Executing the create (if not exists)...");
+        Utils.logD("Ki","Executing the create tbl_shows (if not exists)...");
+        sql = "create table if not exists tbl_dl(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, show TEXT NOT NULL, title TEXT NOT NULL, size INTEGER NOT NULL, is_done TEXT NOT NULL)";
+        db.execSQL(sql);
+        Utils.logD("Ki","Executing the create tbl_dl (if not exists)...");
     }
 
     public String getLinkURL(String showName) {
@@ -56,6 +72,17 @@ public class Ki {
         values.put("name", "Yan");
         values.put("password", "123456");
         db.insert("t_user", "id", values);
+    }
+
+    public void addDL(String path, String show, String title, long size) {
+        values=new ContentValues();
+        values.put("path", path);
+        values.put("show", show);
+        values.put("title", title);
+        values.put("size", size);
+        //set is_done to false until finished downloading
+        values.put("is_done", "false");
+        db.insert("tbl_dl", "id", values);
     }
 
     private void addTestValues() {

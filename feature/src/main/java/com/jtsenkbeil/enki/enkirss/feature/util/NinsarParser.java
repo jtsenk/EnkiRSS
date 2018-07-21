@@ -90,6 +90,8 @@ public class NinsarParser {
                                 Utils.logD("Ep", "summary: " + txt);
                                 xp.nextTag();
                             }
+                        //looks like we should set the link from the enclosure tag (below) :JTS
+                        /*
                         } else if (name.equals("link")) {
                             //txt = xp.getText();
                             //ep.setLink(txt);
@@ -100,6 +102,20 @@ public class NinsarParser {
                                 Utils.logD("Ep", "link: " + txt);
                                 xp.nextTag();
                             }
+                        */
+                        //Above commented out to favor the link in the enclosure RSS tag (see below) :JTS
+                        } else if (name.equals("enclosure")) {
+                            //get the fileSize, type, and link from the enclosure tag
+                            txt = xp.getAttributeValue(null, "length");
+                            ep.setFileSize(Long.parseLong(txt));
+                            Utils.logD("Ep", "fileSize: " + txt);
+                            txt = xp.getAttributeValue(null, "type");
+                            ep.setMimeType(txt);
+                            Utils.logD("Ep", "mimeType: " + txt);
+                            txt = xp.getAttributeValue(null, "url");
+                            ep.setLink(txt);
+                            Utils.logD("Ep", "Link: " + txt);
+                            xp.nextTag();
                         }
                     }
                 }
