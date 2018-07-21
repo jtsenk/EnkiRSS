@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jtsenkbeil.enki.enkirss.feature.activity.ShowsActivity;
@@ -20,12 +22,24 @@ public class MainActivity extends AppCompatActivity {
     private Animation anima2;
     private Intent intent;
     public static Context mainContext;
+    private LinearLayout ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainContext = getApplicationContext();
         setContentView(R.layout.activity_main);
+        ll = findViewById(R.id.main_linear_layout);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //skip animation, go to show page on click
+                anima.cancel();
+                anima2.cancel();
+                intent = new Intent(MainActivity.this, ShowsActivity.class);
+                startActivity(intent);
+            }
+        });
         itv = findViewById(R.id.intro_tv);
         atv = findViewById(R.id.author_tv);
         anima = AnimationUtils.loadAnimation(this, R.anim.anima_intro);

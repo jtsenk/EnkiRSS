@@ -16,7 +16,7 @@ public class AbzuDownloader {
     private String dest;
     private File f;
 
-    //Largely adapted from:
+    //Preliminary downloading knowledge adapted from:
     //https://stackoverflow.com/questions/3028306/download-a-file-with-android-and-showing-the-progress-in-a-progressdialog
     public AbzuDownloader() {
         try {
@@ -30,6 +30,7 @@ public class AbzuDownloader {
         }
     }
 
+    //downloads an xml file to be parsed, and returns its downloaded filepath
     public String downloadXML(String u) {
         try {
             url = u;
@@ -61,12 +62,12 @@ public class AbzuDownloader {
         }
     }
 
-    public boolean downloadEpisdoe(String u) {
+    public boolean downloadEpisode(String u) {
         try {
             url = u;
             dlReq = new DownloadManager.Request(Uri.parse(url));
             dest = url.substring(url.lastIndexOf('/') + 1);
-            //show progress
+            dlReq.setMimeType("media/mp3");
             dlReq.allowScanningByMediaScanner();
             dlReq.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             dlReq.setDestinationInExternalPublicDir(MainActivity.mainContext.getFilesDir().getPath(), dest);

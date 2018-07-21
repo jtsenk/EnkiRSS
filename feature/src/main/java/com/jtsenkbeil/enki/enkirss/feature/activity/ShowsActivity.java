@@ -1,5 +1,7 @@
 package com.jtsenkbeil.enki.enkirss.feature.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,33 +27,22 @@ public class ShowsActivity extends AppCompatActivity {
     private TabLayout tabL;
     private ViewPager vPager;
     private ArrayList<Pair<String,Fragment>> vList = new ArrayList<>();
-    private Button testBtn;
-    private Button delBtn;
+    private Button settingsBtn;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shows);
 
-        testBtn = findViewById(R.id.shows_activity_add_test_btn);
-        testBtn.setOnClickListener(new View.OnClickListener() {
+        settingsBtn = findViewById(R.id.shows_activity_settings_btn);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Ki ki = new Ki();
-                ki.debugAddTestVals();
-                Utils.logD("ShowsActivity","Add Test Vals to DB");
-                ki.closeDown();
-            }
-        });
-
-        delBtn = findViewById(R.id.shows_activity_del_test_btn);
-        delBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Ki ki = new Ki();
-                ki.debugClearTestVals();
-                Utils.logD("ShowsActivity","Clear Show Table");
-                ki.closeDown();
+                intent = new Intent(ShowsActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                //close this activity so we don't go back to bad configs
+                ShowsActivity.this.finish();
             }
         });
 

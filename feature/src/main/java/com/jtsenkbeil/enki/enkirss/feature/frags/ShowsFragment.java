@@ -27,14 +27,11 @@ import java.util.ArrayList;
  *
  */
 public class ShowsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private final ArrayList<String> showList;
     private final Context context;
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private ListView lv;
@@ -60,11 +57,10 @@ public class ShowsFragment extends Fragment {
         curs = ki.getTable(showTbl);
         while (curs.moveToNext()) {
             showList.add(curs.getString(curs.getColumnIndex("name")));
-            Utils.logD("ShowsFragment::Cursor", curs.getString(curs.getColumnIndex("id")) + "    " + curs.getString(curs.getColumnIndex("name")));
+            Utils.logD("ShowsFragment::Cursor", curs.getString(curs.getColumnIndex("id")) + "    " + curs.getString(curs.getColumnIndex("name")) + "    " + curs.getString(curs.getColumnIndex("xml_link")) );
         }
 
-        //TODO: implement Ki closing method!!
-        //ki.closeDown();
+        ki.closeDown();
 
     }
 
@@ -107,8 +103,11 @@ public class ShowsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < showList.size()) {
-                    //got to EpisodeActivity
+                    //got to ShowEpisodesActivity
                     intent = new Intent(getActivity(), ShowEpisodesActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("showName", showList.get(position));
+                    intent.putExtra("showB",bundle);
                     startActivity(intent);
                 }
             }

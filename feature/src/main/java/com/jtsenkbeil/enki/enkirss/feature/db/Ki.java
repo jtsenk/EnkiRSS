@@ -11,6 +11,7 @@ import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
 import java.io.File;
 import java.sql.ResultSet;
+import java.util.Arrays;
 
 import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
@@ -21,6 +22,7 @@ public class Ki {
     private File dbFile;
     private ContentValues values;
     private String sql;
+    private Cursor curs;
     private final String showTbl = "tbl_shows";
 
     public Ki() {
@@ -29,19 +31,24 @@ public class Ki {
             db = openOrCreateDatabase(dbFile.getPath(), null);
             Utils.logD("Ki", "DB is alive at " + db.getPath()  + ".  Calling create...");
             createTable();
-            //add test values to test the db -- TODO: make this a settings option
-            //addTestValues();
-            //clear the show table to clean up -- TODO: make this a settings option
-            //clearShowTable();
         } catch (Exception exc) {
             Utils.logD("KiError","Constructor Error: " + exc.getMessage());
         }
     }
 
     private void createTable() {
-        sql="create table if not exists tbl_shows(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,xml_link TEXT NOT NULL)";
+        sql="create table if not exists tbl_shows(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,xml_link TEXT NOT NULL, xml_loc TEXT)";
         db.execSQL(sql);
         Utils.logD("Ki","Executing the create (if not exists)...");
+    }
+
+    public String getLinkURL(String showName) {
+        sql = "select * from " + showTbl + " where name=\'" + showName + "\'";
+        Utils.logD("Ki","sql: " + sql);
+        curs = db.rawQuery(sql, null);
+        Utils.logD("getLinkURL", Arrays.toString(curs.getColumnNames()) );
+        curs.moveToFirst();
+        return curs.getString(curs.getColumnIndex("xml_link"));
     }
 
     private void addValue(){
@@ -54,11 +61,18 @@ public class Ki {
     private void addTestValues() {
         values=new ContentValues();
         values.put("name", "How Did This Get Made?");
-        values.put("xml_link", "how-did-this-get-made.xml");
+        values.put("xml_link", "https://rss.earwolf.com/how-did-this-get-made");
+        values.put("xml_loc", "uncreated");
         db.insert("tbl_shows", "id", values);
         values = new ContentValues();
         values.put("name", "Stuff You Should Know");
-        values.put("xml_link", "stuff-you-should-know.xml");
+        values.put("xml_link", "https://feeds.megaphone.fm/stuffyoushouldknow");
+        values.put("xml_loc", "uncreated");
+        db.insert("tbl_shows", "id", values);
+        values = new ContentValues();
+        values.put("name", "The Daily");
+        values.put("xml_link", "https://rss.art19.com/the-daily");
+        values.put("xml_loc", "uncreated");
         db.insert("tbl_shows", "id", values);
     }
 
@@ -122,6 +136,21 @@ public class Ki {
         db.update("t_user", values, "id=1", null);
         // method 2
         db.update("t_user", values, "name=? or password=?",new String[]{"Yan","123456"});
+    }
+
+    public void debugDropDB() {
+        resetDB();
+    }
+
+    private void resetDB() {
+        sql = "drop table " + showTbl;
+        db.execSQL(sql);
+        //sql = "drop table " + showTbl;
+        //db.execSQL(sql);
+        sql = "vacuum";
+        db.execSQL(sql);
+        Utils.logD("Ki","Dropped tables, now creating:");
+        createTable();
     }
 
     public void closeDown() {

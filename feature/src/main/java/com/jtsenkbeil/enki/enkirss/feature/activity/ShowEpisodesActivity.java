@@ -18,6 +18,7 @@ import com.jtsenkbeil.enki.enkirss.feature.R;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.EpsListAdapter;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.ShowsListAdapter;
 import com.jtsenkbeil.enki.enkirss.feature.db.Ki;
+import com.jtsenkbeil.enki.enkirss.feature.dialog.EpisodeDialog;
 import com.jtsenkbeil.enki.enkirss.feature.util.AbzuDownloader;
 import com.jtsenkbeil.enki.enkirss.feature.util.Episode;
 import com.jtsenkbeil.enki.enkirss.feature.util.NinsarParser;
@@ -31,9 +32,11 @@ public class ShowEpisodesActivity extends AppCompatActivity {
     private ArrayList<Episode> epList;
     private NinsarParser np;
     private String file;
+    private String showName;
     private Ki ki;
     private AbzuDownloader abzu;
     private BroadcastReceiver br;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,16 @@ public class ShowEpisodesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_episodes);
         lv = findViewById(R.id.episodes_listv);
         epList = new ArrayList<>();
-
+        //get the showName from the Bundle
+        bundle = getIntent().getBundleExtra("showB");
+        showName = bundle.getString("showName");
         //download the XML RSS file
         abzu = new AbzuDownloader();
-        //get XML URL from DB eventually
-        file = abzu.downloadXML("https://rss.earwolf.com/how-did-this-get-made");
-
+        //get XML URL from DB
+        ki = new Ki();
+        //debug the link URL
+        Utils.logD("ShowEpisodesActivity","link url=" + ki.getLinkURL(showName));
+        file = abzu.downloadXML( ki.getLinkURL(showName) );
         //wait until the download has finished before parsing
         br = new BroadcastReceiver() {
             @Override
@@ -66,8 +73,14 @@ public class ShowEpisodesActivity extends AppCompatActivity {
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            //Toast.makeText(getBaseContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
-                            Utils.toastShort(String.valueOf(position));
+                            //Utils.toastShort(String.valueOf(position));
+                            EpisodeDialog epd = new EpisodeDialog(ShowEpisodesActivity.this, new EpisodeDialog.EpisodeDialogEventListener() {
+                                @Override
+                                public void onOKClicked() {
+                                    Utils.logD("EPDEListener","EPD Go!");
+                                }
+                            });
+                            epd.show();
                         }
                     });
                 }
