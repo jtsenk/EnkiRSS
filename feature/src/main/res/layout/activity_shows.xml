@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_margin="2dp"
+        android:layout_margin="6dp"
         android:text="Settings"
         android:background="@android:color/holo_red_dark"
         android:clickable="true"/>
@@ -27,7 +27,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_margin="2dp"
+            android:layout_margin="6dp"
+            android:layout_marginTop="6dp"
             android:text="Add RSS Feed"
             android:background="@android:color/holo_green_dark"
             android:clickable="true"/>
