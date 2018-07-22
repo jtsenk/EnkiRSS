@@ -89,6 +89,7 @@ public class AbzuDownloader {
             f = new File(MainActivity.mainContext.getExternalFilesDir(null) + "/" + dest);
             destination = Uri.fromFile(f);
             Utils.logD("Abzu","destination: " + destination.getPath());
+            dlReq.setDestinationUri(destination);
             dlReq.setMimeType(type);
             dlReq.allowScanningByMediaScanner();
             dlReq.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);

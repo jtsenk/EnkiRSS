@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jtsenkbeil.enki.enkirss.feature.R;
+import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,12 @@ public class DownloadsListAdapter extends BaseAdapter {
     private final Context context;
     private final LayoutInflater inflater;
     private final ArrayList<String> list;
+    private final ArrayList<String> shList;
 
-    public DownloadsListAdapter(Context context, ArrayList<String> list) {
+    public DownloadsListAdapter(Context context, ArrayList<String> list, ArrayList<String> shList) {
         this.context = context;
         this.list = list;
+        this.shList = shList;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -44,8 +47,11 @@ public class DownloadsListAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.downloads_item, parent, false);
         TextView tv = (TextView)convertView.findViewById(R.id.downloads_item_tv);
         tv.setText(list.get(position));
-        Log.d("get", list.get(position));
-        return tv;
+        TextView stv = convertView.findViewById(R.id.downloads_item_show_tv);
+        stv.setText(shList.get(position));
+        Utils.logD("getE", list.get(position));
+        Utils.logD("getS", shList.get(position));
+        return convertView;
     }
 
 }

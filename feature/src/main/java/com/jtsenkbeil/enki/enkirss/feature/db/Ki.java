@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.jtsenkbeil.enki.enkirss.feature.MainActivity;
+import com.jtsenkbeil.enki.enkirss.feature.util.Episode;
 import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
 import java.io.File;
@@ -67,13 +68,6 @@ public class Ki {
         return curs.getString(curs.getColumnIndex("xml_link"));
     }
 
-    private void addValue(){
-        values=new ContentValues();
-        values.put("name", "Yan");
-        values.put("password", "123456");
-        db.insert("t_user", "id", values);
-    }
-
     public void addDL(String path, String show, String title, long size) {
         values=new ContentValues();
         values.put("path", path);
@@ -131,6 +125,12 @@ public class Ki {
         db.execSQL(sql);
     }
 
+    public String getEpisodePath(String title, String show) {
+        curs = db.rawQuery("select * from tbl_dl where show=\'" + show + "\' and title=\"" + title + "\"", null);
+        curs.moveToFirst();
+        return curs.getString(curs.getColumnIndex("path"));
+    }
+
     private void deleteShow(String name){
         // use id
         //db.delete("tbl_shows", "id=1", null);
@@ -138,6 +138,7 @@ public class Ki {
         db.delete("tbl_shows", "name=\'" + name + "\'", null);
     }
 
+    //example method provided by the instructor :JTS
     private void queryValue(){
         // use rawQuery
         Cursor c1 = db.rawQuery("select * from t_user", null);
@@ -172,8 +173,8 @@ public class Ki {
     private void resetDB() {
         sql = "drop table " + showTbl;
         db.execSQL(sql);
-        //sql = "drop table " + showTbl;
-        //db.execSQL(sql);
+        sql = "drop table tbl_dl";
+        db.execSQL(sql);
         sql = "vacuum";
         db.execSQL(sql);
         Utils.logD("Ki","Dropped tables, now creating:");

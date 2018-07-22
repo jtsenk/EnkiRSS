@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jtsenkbeil.enki.enkirss.feature.activity.SettingsActivity;
 import com.jtsenkbeil.enki.enkirss.feature.activity.ShowsActivity;
 import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
@@ -27,7 +28,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //set some static vars for the app
         mainContext = getApplicationContext();
+        Utils.debugMode = true;
+
         setContentView(R.layout.activity_main);
         ll = findViewById(R.id.main_linear_layout);
         ll.setOnClickListener(new View.OnClickListener() {

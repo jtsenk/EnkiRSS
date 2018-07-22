@@ -16,6 +16,12 @@ public class Episode {
         fileSize = 0;
     }
 
+    public Episode(String title, String summary, String link) {
+        this.title = title;
+        this.summary = summary;
+        this.link = link;
+    }
+
     public String getSummary() {
         return summary;
     }

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application>
         <activity android:name=".MainActivity">
@@ -64,6 +65,23 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
+
+
+        <activity android:name=".activity.AudioActivity">
+            <intent-filter android:order="1">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="enki.jtsenkbeil.com"
+                    android:pathPattern="/.*"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <service android:enabled="true" android:name=".audio.MusicService" />
     </application>
 
 </manifest>

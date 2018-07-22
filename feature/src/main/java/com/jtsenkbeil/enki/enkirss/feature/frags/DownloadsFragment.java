@@ -13,12 +13,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.jtsenkbeil.enki.enkirss.feature.MainActivity;
 import com.jtsenkbeil.enki.enkirss.feature.R;
+import com.jtsenkbeil.enki.enkirss.feature.activity.AudioActivity;
 import com.jtsenkbeil.enki.enkirss.feature.activity.ShowEpisodesActivity;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.DownloadsListAdapter;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.ShowsListAdapter;
+import com.jtsenkbeil.enki.enkirss.feature.audio.AudioOb;
+import com.jtsenkbeil.enki.enkirss.feature.audio.BaseAudioOb;
+import com.jtsenkbeil.enki.enkirss.feature.audio.MusicController;
 import com.jtsenkbeil.enki.enkirss.feature.db.Ki;
+import com.jtsenkbeil.enki.enkirss.feature.util.Episode;
+import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -38,24 +46,35 @@ public class DownloadsFragment extends Fragment {
     private Intent intent;
     private View view;
     private ArrayList<String> dList;
+    private ArrayList<String> shList;
     private final Context context;
     private Ki ki;
     private Cursor curs;
+    private Bundle bundle;
+    private final MusicController controller;
+    public static ArrayList<BaseAudioOb> contentList;
 
-    private OnFragmentInteractionListener mListener;
+    private ShowsFragment.OnFragmentInteractionListener mListener;
 
     public DownloadsFragment() {
 
         context = getContext();
         intent = null;
         dList = new ArrayList<>();
+        shList = new ArrayList<>();
+        bundle = null;
+        contentList = new ArrayList<>();
+        initInfo();
 
         ki = new Ki();
         curs = ki.getTable("tbl_dl");
         while (curs.moveToNext()) {
+            shList.add(curs.getString(curs.getColumnIndex("show")));
             dList.add(curs.getString(curs.getColumnIndex("title")));
         }
         ki.closeDown();
+
+        controller = MusicController.getInstance(MainActivity.mainContext);
     }
 
     /**
@@ -91,18 +110,68 @@ public class DownloadsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_downloads, container, false);
         lv = view.findViewById(R.id.downloads_listv);
-        DownloadsListAdapter adapter = new DownloadsListAdapter(this.getContext(), dList);
+        DownloadsListAdapter adapter = new DownloadsListAdapter(this.getContext(), dList, shList);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < dList.size()) {
-                    Toast.makeText(getContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+                    //launch this episode in the audio player
+                    //bundle = new Bundle();
+                    //ki = new Ki();
+                    //pass episode info to player in the bundle (in intent)
+                    //bundle.putString("filepath", ki.getEpisodePath(dList.get(position), shList.get(position)));
+                    //close ki to prevent leak
+                    //ki.closeDown();
+
+                    //bundle.putString("title",dList.get(position));
+                    //bundle.putString("show",shList.get(position));
+                    //intent = new Intent(getActivity(), AudioActivity.class);
+                    //intent.putExtra("bundle",bundle);
+
+                    //below from the instructor's PlayListView.java
+                    controller.setPlayList(DownloadsFragment.contentList);
+                    if(position == controller.position){
+                        if(controller.isPlaying){
+                            controller.pause();
+                            intent = new Intent(getActivity(), AudioActivity.class);
+                            startActivity(intent);
+                        }else{
+                            controller.play();
+                            intent = new Intent(getActivity(), AudioActivity.class);
+                            startActivity(intent);
+                        }
+                    }else{
+                        controller.position = position;
+                        intent = new Intent(getActivity(), AudioActivity.class);
+                        startActivity(intent);
+                        controller.play();
+                    }
                 }
             }
         });
 
         return view;
+    }
+
+    private void initInfo() {
+
+        //new strategy: read everything from the DL table in the DB
+        ki = new Ki();
+        curs = ki.getTable("tbl_dl");
+        while (curs.moveToNext()) {
+
+            File file = new File(curs.getString(curs.getColumnIndex("path")));
+            AudioOb a = new AudioOb();
+            a.setURL(Uri.fromFile(file).toString());
+            a.setName(curs.getString(curs.getColumnIndex("title")));
+            a.setShow(curs.getString(curs.getColumnIndex("show")));
+            Utils.logD("DownloadFragment::initInfo", "url= " + Uri.fromFile(file).toString());
+            Utils.logD("DownloadFragment::initInfo", "does file exist? " + file.exists());
+            contentList.add(a);
+        }
+        ki.closeDown();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

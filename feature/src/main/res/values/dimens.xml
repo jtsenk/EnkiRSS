@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="playscreen_play_next_size">25dp</dimen>
+    <dimen name="playscreen_play_play_size">35dp</dimen>
 </resources>
