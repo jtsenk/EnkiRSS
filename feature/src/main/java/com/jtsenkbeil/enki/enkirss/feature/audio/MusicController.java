@@ -29,7 +29,7 @@ public class MusicController {
     private PlayerReceiver playerReceiver;
     private Context mContext;
     private IPlayerStatus playerStatus;
-    public static boolean isPlaying =false;
+    public static boolean isPlaying = false;
     public static int position = 0;
     private Map<String, IPlayerStatus> listenerMap = new HashMap<String, IPlayerStatus>();
     public static final String PLAY_NEXT =  "MusicController.broadcast.next";

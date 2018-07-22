@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,7 +54,7 @@ public class EpisodeDialog extends Dialog {
         //get the episode info from the epBundle :JTS
         dHeader.setText(epBundle.getString("showName"));
         dEpTitle.setText(epBundle.getString("epTitle"));
-        dEpDesc.setText(epBundle.getString("epDesc"));
+        dEpDesc.setText(Html.fromHtml(epBundle.getString("epDesc")));
         //convert fileSize from B to MB
         mbFileSize = (double)epBundle.getLong("epSize") / 1048576.0;
         df = new DecimalFormat("#.##");
@@ -73,7 +74,7 @@ public class EpisodeDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 abzu = new AbzuDownloader();
-                if (abzu.downloadEpisode(epBundle.getString("epLink"), epBundle.getString("showName"), epBundle.getString("epTitle"), epBundle.getLong("epSize"), epBundle.getString("epType")) ) {
+                if (abzu.downloadEpisode(epBundle.getString("epLink"), epBundle.getString("showName"), epBundle.getString("epTitle"), epBundle.getLong("epSize"), epBundle.getString("epType"), epBundle.getString("epDesc") )) {
                     Utils.logD("Abzu","Episode Download Successful");
                 } else {
                     Utils.logD("AbzuError","Episode Download Failed!");

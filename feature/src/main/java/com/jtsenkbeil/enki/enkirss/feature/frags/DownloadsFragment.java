@@ -23,6 +23,7 @@ import com.jtsenkbeil.enki.enkirss.feature.audio.AudioOb;
 import com.jtsenkbeil.enki.enkirss.feature.audio.BaseAudioOb;
 import com.jtsenkbeil.enki.enkirss.feature.audio.MusicController;
 import com.jtsenkbeil.enki.enkirss.feature.db.Ki;
+import com.jtsenkbeil.enki.enkirss.feature.dialog.DeleteDownloadDialog;
 import com.jtsenkbeil.enki.enkirss.feature.util.Episode;
 import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
@@ -110,12 +111,19 @@ public class DownloadsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_downloads, container, false);
         lv = view.findViewById(R.id.downloads_listv);
-        DownloadsListAdapter adapter = new DownloadsListAdapter(this.getContext(), dList, shList);
+
+        //set up the list adapter, which contains the GestureDetector for onTouch events
+        final DownloadsListAdapter adapter = new DownloadsListAdapter(this.getContext(), dList, shList, controller);
         lv.setAdapter(adapter);
+
+        //onItenClick is now handled by the adapter through the GestureDetector
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < dList.size()) {
+                    //old strategy -- WAY too complicated on both ends :JTS
+                    ////(for new strategy see initInfo() below)
                     //Toast.makeText(getContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
                     //launch this episode in the audio player
                     //bundle = new Bundle();
@@ -152,18 +160,64 @@ public class DownloadsFragment extends Fragment {
             }
         });
 
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //put episode info into a Bundle for the dialog :JTS
+                bundle = new Bundle();
+                ki = new Ki();
+                curs = ki.getEpisodeRow(dList.get(position),shList.get(position));
+                curs.moveToFirst();
+                bundle.putString("showName",shList.get(position));
+                bundle.putString("epTitle", dList.get(position));
+                bundle.putString("epDesc", curs.getString(curs.getColumnIndex("description")));
+                bundle.putLong("epSize", curs.getLong(curs.getColumnIndex("size")));
+                bundle.putString("epPath",curs.getString(curs.getColumnIndex("path")));
+                bundle.putInt("epID", curs.getInt(curs.getColumnIndex("id")));
+                ki.closeDown();
+
+                DeleteDownloadDialog dld = new DeleteDownloadDialog(getActivity(), bundle, new DeleteDownloadDialog.DeleteDownloadDialogEventListener() {
+                    @Override
+                    public void onDeleteClicked() {
+                        Utils.logD("DLsFragment::DDLDialogEventListener","Hears onDeleteClicked");
+                        //rebuild the list for the view
+                        shList.clear();
+                        dList.clear();
+                        ki = new Ki();
+                        curs = ki.getTable("tbl_dl");
+                        while (curs.moveToNext()) {
+                            shList.add(curs.getString(curs.getColumnIndex("show")));
+                            dList.add(curs.getString(curs.getColumnIndex("title")));
+                        }
+                        ki.closeDown();
+                        Utils.logD("DLsFragment::DDLDialogEventListener","Calling adapter.reset");
+                        adapter.resetList(dList, shList);
+                    }
+                    @Override
+                    public void onCancelClicked() {
+                        Utils.logD("DLsFragment::DDLDialogEventListener","Hears onCancelClicked");
+                    }
+                });
+                dld.show();
+                return true;
+            }
+        });
+
         return view;
-    }
+    }//end OnCreateView
 
     private void initInfo() {
 
         //new strategy: read everything from the DL table in the DB
         ki = new Ki();
         curs = ki.getTable("tbl_dl");
+        File file;
+        AudioOb a;
         while (curs.moveToNext()) {
 
-            File file = new File(curs.getString(curs.getColumnIndex("path")));
-            AudioOb a = new AudioOb();
+            file = new File(curs.getString(curs.getColumnIndex("path")));
+            a = new AudioOb();
             a.setURL(Uri.fromFile(file).toString());
             a.setName(curs.getString(curs.getColumnIndex("title")));
             a.setShow(curs.getString(curs.getColumnIndex("show")));

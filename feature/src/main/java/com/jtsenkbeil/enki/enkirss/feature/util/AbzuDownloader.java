@@ -73,7 +73,7 @@ public class AbzuDownloader {
         }
     }
 
-    public boolean downloadEpisode(String link, String show, String title, long size, String type) {
+    public boolean downloadEpisode(String link, String show, String title, long size, String type, String desc) {
         try {
             //hack to make sure the XML broadcast receiver doesn't fire download for every download completed
             ShowEpisodesActivity.isXML = false;
@@ -95,7 +95,7 @@ public class AbzuDownloader {
             dlReq.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             //add download to DB
             ki = new Ki();
-            ki.addDL(destination.getPath(), show, title, size);
+            ki.addDL(destination.getPath(), show, title, size, desc);
             ki.closeDown();
             //add episode to download queue
             dlm.enqueue(dlReq);

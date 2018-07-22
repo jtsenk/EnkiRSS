@@ -54,7 +54,7 @@ public class Ki {
         sql="create table if not exists tbl_shows(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,xml_link TEXT NOT NULL, xml_loc TEXT)";
         db.execSQL(sql);
         Utils.logD("Ki","Executing the create tbl_shows (if not exists)...");
-        sql = "create table if not exists tbl_dl(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, show TEXT NOT NULL, title TEXT NOT NULL, size INTEGER NOT NULL, is_done TEXT NOT NULL)";
+        sql = "create table if not exists tbl_dl(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, show TEXT NOT NULL, title TEXT NOT NULL, size INTEGER NOT NULL, description TEXT, is_done TEXT NOT NULL)";
         db.execSQL(sql);
         Utils.logD("Ki","Executing the create tbl_dl (if not exists)...");
     }
@@ -68,15 +68,27 @@ public class Ki {
         return curs.getString(curs.getColumnIndex("xml_link"));
     }
 
-    public void addDL(String path, String show, String title, long size) {
+    public void addDL(String path, String show, String title, long size, String desc) {
         values=new ContentValues();
         values.put("path", path);
         values.put("show", show);
         values.put("title", title);
         values.put("size", size);
+        values.put("description", desc);
         //set is_done to false until finished downloading
         values.put("is_done", "false");
         db.insert("tbl_dl", "id", values);
+    }
+
+    public void deleteDL(int id, String path) {
+        Utils.logD("Ki","Deleting file from device and DB");
+        sql = "delete from tbl_dl where id=" + id;
+        db.execSQL(sql);
+        File f = new File(path);
+        f.delete();
+        if (!f.exists()) {
+            Utils.logD("Ki","File deleted");
+        }
     }
 
     private void addTestValues() {
@@ -116,6 +128,11 @@ public class Ki {
         db.execSQL(sql);
     }
 
+    public Cursor getEpisodeRow(String epName, String showName) {
+        curs = db.rawQuery("select * from tbl_dl where show=\'" + showName + "\' and title=\"" + epName + "\"", null);
+        return curs;
+    }
+
     private Cursor getShow(int id) {
         return db.rawQuery("select * from tbl_shows where id=" + id, null);
     }
@@ -152,7 +169,7 @@ public class Ki {
             for(int i=0,j=c.getColumnCount();i<j;i++){
                 msg+="--"+c.getString(i);
             }
-            Log.d("SQLite", "data:"+msg);
+            Utils.logD("SQLite", "data:"+msg);
             c.moveToNext();
         }
     }

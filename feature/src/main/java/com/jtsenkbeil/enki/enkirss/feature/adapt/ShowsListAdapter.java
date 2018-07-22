@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jtsenkbeil.enki.enkirss.feature.R;
+import com.jtsenkbeil.enki.enkirss.feature.util.Utils;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class ShowsListAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.show_item, parent, false);
         TextView tv = (TextView)convertView.findViewById(R.id.show_item_tv);
         tv.setText(list.get(position));
-        Log.d("get", list.get(position));
+        Utils.logD("get", list.get(position));
         return tv;
     }
 

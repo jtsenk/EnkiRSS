@@ -7,16 +7,16 @@
     android:background="@color/colorPrimary">
 
     <TextView
-        android:id="@+id/ep_dialog_header"
+        android:id="@+id/del_dl_dialog_header"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="EpisodeDialog"
-        android:textSize="14dp"
+        android:text="Delete Downloaded Episode?"
+        android:textSize="20dp"
         android:textColor="@android:color/primary_text_light"
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/ep_dialog_ep_title"
+        android:id="@+id/del_dl_dialog_ep_title"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="EpTitle"
@@ -29,7 +29,7 @@
         android:layout_height="120dp">
 
         <TextView
-            android:id="@+id/ep_dialog_ep_desc"
+            android:id="@+id/del_dl_ep_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -40,7 +40,7 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/ep_dialog_ep_filesize"
+        android:id="@+id/del_dl_ep_filesize"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:text="FileSize"
@@ -48,10 +48,10 @@
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/ep_dialog_ep_filetype"
+        android:id="@+id/del_dl_ep_filetype"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="FileType"
+        android:text="audio/mpeg"
         android:textColor="@android:color/primary_text_light"
         android:gravity="center"/>
 
@@ -61,7 +61,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/ep_dialog_cancel_btn"
+            android:id="@+id/del_dl_cancel_btn"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -71,14 +71,14 @@
             android:background="@android:color/holo_red_dark" />
 
         <Button
-            android:id="@+id/ep_dialog_dl_btn"
+            android:id="@+id/del_dl_del_btn"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="Download"
+            android:text="Delete"
             android:clickable="true"
-            android:background="@android:color/holo_green_dark" />
+            android:background="@android:color/holo_orange_dark" />
 
     </LinearLayout>
 

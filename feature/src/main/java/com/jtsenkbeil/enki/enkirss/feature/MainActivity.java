@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         //set some static vars for the app
         mainContext = getApplicationContext();
-        Utils.debugMode = true;
 
         setContentView(R.layout.activity_main);
         ll = findViewById(R.id.main_linear_layout);

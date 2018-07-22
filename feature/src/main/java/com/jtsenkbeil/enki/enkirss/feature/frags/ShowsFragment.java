@@ -7,14 +7,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.jtsenkbeil.enki.enkirss.feature.MainActivity;
 import com.jtsenkbeil.enki.enkirss.feature.R;
+import com.jtsenkbeil.enki.enkirss.feature.activity.AudioActivity;
 import com.jtsenkbeil.enki.enkirss.feature.activity.ShowEpisodesActivity;
 import com.jtsenkbeil.enki.enkirss.feature.adapt.ShowsListAdapter;
 import com.jtsenkbeil.enki.enkirss.feature.db.Ki;
@@ -149,4 +153,5 @@ public class ShowsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
