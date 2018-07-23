@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.jtsenkbeil.enki.enkirss.feature.MainActivity;
@@ -30,6 +31,7 @@ public class AddFeedActivity extends AppCompatActivity {
     private Button cancelBtn;
     private TextView procTxt;
     private Button debugValBtn;
+    private RadioGroup radioG;
 
     private String newUrl;
     public static boolean isNewXML;
@@ -38,6 +40,7 @@ public class AddFeedActivity extends AppCompatActivity {
     private String filePath;
     private BroadcastReceiver br;
     private NinsarParser np;
+    private int radioID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,16 @@ public class AddFeedActivity extends AppCompatActivity {
         cancelBtn = findViewById(R.id.add_feed_cancel_btn);
         procTxt = findViewById(R.id.add_feed_proc_tv);
         debugValBtn = findViewById(R.id.add_feed_debug_val_btn);
+        radioG = findViewById(R.id.add_feed_radio_g);
+
+        radioG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                radioID = checkedId;
+            }
+        });
+        //set 'none' as default 'add protocol' option
+        radioG.check(R.id.add_feed_radio_none);
 
         //enable the known-feed test value button in debug mode
         if (Utils.debugMode) {
@@ -68,6 +81,12 @@ public class AddFeedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 newUrl = edTxt.getText().toString();
+                //check the radio buttons to see if we add a protocol :JTS
+                if (radioID == R.id.add_feed_radio_http) {
+                    newUrl = "http://" + newUrl;
+                } else if (radioID == R.id.add_feed_radio_https) {
+                    newUrl = "https://" + newUrl;
+                }
                 Utils.logD("AddFeed", "Process Clicked, newUrl= " + newUrl);
                 procTxt.setText("Processing new RSS feed at " + newUrl);
                 //kinda hacky but this will notify what sort of xml we are downloading :JTS
