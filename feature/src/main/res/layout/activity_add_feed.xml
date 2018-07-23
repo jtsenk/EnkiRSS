@@ -8,10 +8,51 @@
     tools:context=".activity.AddFeedActivity">
 
     <TextView
+        android:id="@+id/add_feed_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:text="Add RSS Feed"
         android:textSize="40dp"
+        android:gravity="center"
+        android:layout_marginTop="50dp"/>
+
+    <EditText
+        android:id="@+id/add_feed_et"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:inputType="textUri"
+        android:hint="Enter RSS URL Here"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/add_feed_proc_btn"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="Process New RSS Feed"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="50dp"/>
+
+    <Button
+        android:id="@+id/add_feed_cancel_btn"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:text="Back"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="50dp"/>
+
+    <TextView
+        android:id="@+id/add_feed_proc_tv"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:gravity="center"/>
+
+    <Button
+        android:id="@+id/add_feed_debug_val_btn"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="Enter Known Val for Debug"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="50dp"
+        android:visibility="invisible" />
 
 </LinearLayout>

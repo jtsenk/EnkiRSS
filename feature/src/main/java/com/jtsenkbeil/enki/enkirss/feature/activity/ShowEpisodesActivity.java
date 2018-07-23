@@ -71,6 +71,9 @@ public class ShowEpisodesActivity extends AppCompatActivity {
         ki = new Ki();
         //debug the link URL
         Utils.logD("ShowEpisodesActivity","link url=" + ki.getLinkURL(showName));
+        //kinda hacky but this will notify what sort of xml we are downloading :JTS
+        isXML = true;
+        AddFeedActivity.isNewXML = false;
         //download the xml rss file
         file = abzu.downloadXML( ki.getLinkURL(showName) );
 

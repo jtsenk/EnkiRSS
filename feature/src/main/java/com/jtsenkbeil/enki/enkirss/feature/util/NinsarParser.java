@@ -166,6 +166,45 @@ public class NinsarParser {
         return entries;
     }
 
+    public String parseShowInfo() throws XmlPullParserException, IOException {
+        try {
+            xp.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            xp.setInput(in, "UTF8");
+            xp.nextTag();
+            Utils.logD("parseShowInfo","getName() = " + xp.getName());
+            return readFeedShowInfo();
+        } catch (Exception exc) {
+            Utils.logD("parseShowInfo","Error: " + exc.getMessage());
+            exc.printStackTrace();
+            return null;
+        } finally {
+            in.close();
+        }
+    }
+
+    private String readFeedShowInfo() throws XmlPullParserException, IOException {
+        String showTitle = "";
+        String tag = "";
+        while (xp.next() != XmlPullParser.END_DOCUMENT) {
+            tag = xp.getName();
+            if (tag != null) {
+                //only getEpisodeInfo if this is the start_tag of an item
+                if (tag.equals("title") && xp.getEventType()==XmlPullParser.START_TAG) {
+                    xp.next();
+                    showTitle = xp.getText();
+                    break;
+                }
+            } else {
+                //tag is null, must be text, etc., so skip this one
+                //Utils.logD("readFeedEps","tag is null, skipping iteration");
+            }
+            Utils.logD("readFeedShowInfo","tag: " + tag);
+        }
+        return showTitle;
+    }
+
+
+
     //original-ish from AndroidDev - not really using that skip method anymore, because why? :JTS
     private ArrayList<Episode> readFeed() throws XmlPullParserException, IOException {
         entries = new ArrayList();

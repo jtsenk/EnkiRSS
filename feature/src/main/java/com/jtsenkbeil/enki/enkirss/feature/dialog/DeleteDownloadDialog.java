@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -55,7 +56,7 @@ public class DeleteDownloadDialog extends Dialog {
         dEpType = findViewById(R.id.ep_dialog_ep_filetype);
 
         dEpTitle.setText(bundle.getString("epTitle"));
-        dEpDesc.setText(bundle.getString("epDesc"));
+        dEpDesc.setText(Html.fromHtml(bundle.getString("epDesc")) );
         mbFileSize = (double)bundle.getLong("epSize") / 1048576.0;
         df = new DecimalFormat("#.##");
         dEpSize.setText("Size: " + df.format(mbFileSize) + " MB" );

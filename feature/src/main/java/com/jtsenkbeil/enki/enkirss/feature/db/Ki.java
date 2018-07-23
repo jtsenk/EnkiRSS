@@ -68,6 +68,15 @@ public class Ki {
         return curs.getString(curs.getColumnIndex("xml_link"));
     }
 
+    public void addShow(String title, String xmlLink) {
+        values=new ContentValues();
+        values.put("name", title);
+        values.put("xml_link", xmlLink);
+        values.put("xml_loc", "uncreated");
+        Utils.logD("AddFeed","Adding show to DB: " + title + ", " + xmlLink);
+        db.insert("tbl_shows", "id", values);
+    }
+
     public void addDL(String path, String show, String title, long size, String desc) {
         values=new ContentValues();
         values.put("path", path);
@@ -113,7 +122,7 @@ public class Ki {
         addTestValues();
     }
 
-    public void debugClearTestVals() {
+    public void debugClearShowVals() {
         clearShowTable();
     }
 
@@ -135,11 +144,6 @@ public class Ki {
 
     private Cursor getShow(int id) {
         return db.rawQuery("select * from tbl_shows where id=" + id, null);
-    }
-
-    private void addShow(String name, String xml_link) {
-        sql="insert into tbl_shows values(\'" + name + "\',\'" + xml_link + "\')";
-        db.execSQL(sql);
     }
 
     public String getEpisodePath(String title, String show) {

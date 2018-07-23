@@ -52,7 +52,7 @@
         android:id="@+id/settings_delv_test_btn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Clear test vals from DB"
+        android:text="Clear Shows Table in DB"
         android:clickable="true"/>
 
     <Button

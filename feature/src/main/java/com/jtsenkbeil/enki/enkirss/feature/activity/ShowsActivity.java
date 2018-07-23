@@ -2,6 +2,8 @@ package com.jtsenkbeil.enki.enkirss.feature.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +39,24 @@ public class ShowsActivity extends AppCompatActivity implements View.OnTouchList
     private GestureDetector gestureDetector;
     private float sumX;
     private float sumY;
+    ViewFragmentStateAdapter adapter;
+
+    public static final int FEED_OK = 171717;
+    private static Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == FEED_OK) {
+                Bundle bundler = msg.getData();
+                String s = bundler.getString("newFeed");
+                Utils.toastLong("New Feed Added: " + s);
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    public static Handler getHandler() {
+        return handler;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +81,7 @@ public class ShowsActivity extends AppCompatActivity implements View.OnTouchList
                 //launch the Add RSS Feed activity :JTS
                 intent = new Intent(ShowsActivity.this, AddFeedActivity.class);
                 startActivity(intent);
+                ShowsActivity.this.finish();
             }
         });
 
@@ -70,7 +91,7 @@ public class ShowsActivity extends AppCompatActivity implements View.OnTouchList
         vList.add(new Pair<String, Fragment>("Shows", new ShowsFragment() ) );
         vList.add(new Pair<String, Fragment>("Downloads", new DownloadsFragment() ) );
 
-        ViewFragmentStateAdapter adapter = new ViewFragmentStateAdapter(this.getSupportFragmentManager(), vList);
+        adapter = new ViewFragmentStateAdapter(this.getSupportFragmentManager(), vList);
         vPager.setAdapter(adapter);
         tabL.setupWithViewPager(vPager);
 
@@ -86,6 +107,13 @@ public class ShowsActivity extends AppCompatActivity implements View.OnTouchList
         //File df = getFilesDir();
         //Utils.toastShort(df.getPath());
         //Utils.logD("Files Directory",df.getPath());
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //reset the vList
+        adapter.updateShowFrag(new Pair<String, Fragment>("Shows", new ShowsFragment() ) );
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.jtsenkbeil.enki.enkirss.feature.MainActivity;
+import com.jtsenkbeil.enki.enkirss.feature.activity.AddFeedActivity;
 import com.jtsenkbeil.enki.enkirss.feature.activity.ShowEpisodesActivity;
 import com.jtsenkbeil.enki.enkirss.feature.db.Ki;
 
@@ -39,8 +40,6 @@ public class AbzuDownloader {
     //downloads an xml file to be parsed, and returns its downloaded filepath
     public String downloadXML(String u) {
         try {
-            //hack to make sure the XML broadcast receiver doesn't fire download for every download completed
-            ShowEpisodesActivity.isXML = true;
             url = u;
             dlReq = new DownloadManager.Request(Uri.parse(url));
             dest = url.substring(url.lastIndexOf('/') + 1) + ".xml";
@@ -77,6 +76,7 @@ public class AbzuDownloader {
         try {
             //hack to make sure the XML broadcast receiver doesn't fire download for every download completed
             ShowEpisodesActivity.isXML = false;
+            AddFeedActivity.isNewXML = false;
             url = link;
             dlReq = new DownloadManager.Request(Uri.parse(url));
             if (type.equals("audio/mpeg") ) {

@@ -31,4 +31,14 @@ public class ViewFragmentStateAdapter extends FragmentStatePagerAdapter {
         return list.get(position).first;
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    public void updateShowFrag(Pair<String, Fragment> pair) {
+        list.remove(0);
+        list.add(0, pair);
+        notifyDataSetChanged();
+    }
 }

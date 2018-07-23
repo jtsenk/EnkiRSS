@@ -66,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Ki ki = new Ki();
-                ki.debugClearTestVals();
+                ki.debugClearShowVals();
                 Utils.logD("SettingsActivity","Clear Show Table");
                 ki.closeDown();
             }

@@ -20,6 +20,9 @@ public class Utils {
         Toast.makeText(MainActivity.mainContext, msg,Toast.LENGTH_SHORT).show();
     }
 
+    public static void toastLong(String msg) {
+        Toast.makeText(MainActivity.mainContext, msg,Toast.LENGTH_LONG).show();
+    }
 
     //from instructor's UtilTime class :JTS
     public static String secToTime(int time) {
