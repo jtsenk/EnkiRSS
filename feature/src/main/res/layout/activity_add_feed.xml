@@ -10,11 +10,11 @@
     <TextView
         android:id="@+id/add_feed_header"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="80dp"
         android:text="Add RSS Feed"
         android:textSize="40dp"
         android:gravity="center"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/add_feed_et"
@@ -69,7 +69,7 @@
         android:layout_height="60dp"
         android:text="Process New RSS Feed"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="50dp"/>
+        android:layout_marginLeft="30dp" />
 
     <Button
         android:id="@+id/add_feed_cancel_btn"
@@ -82,7 +82,7 @@
     <TextView
         android:id="@+id/add_feed_proc_tv"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:gravity="center"/>
 
     <Button
@@ -90,7 +90,7 @@
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:text="Enter Known Val for Debug"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="50dp"
         android:visibility="invisible" />
 
